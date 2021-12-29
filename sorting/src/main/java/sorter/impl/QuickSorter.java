@@ -78,7 +78,9 @@ public class QuickSorter implements Sorter {
                 }
             }
         }
-        Utils.swap(pIdx, ++ppos, elements);
+        if(++ppos != pIdx) {
+            Utils.swap(pIdx, ppos, elements);
+        }
         return ppos;
     }
 }
