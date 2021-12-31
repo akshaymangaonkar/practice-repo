@@ -1,6 +1,7 @@
 package runner;
 import sorter.Pivot;
 import sorter.impl.BubbledSorter;
+import sorter.impl.MergeSorter;
 import sorter.impl.QuickSorter;
 
 public class Runner {
@@ -8,9 +9,10 @@ public class Runner {
 
     public static void main(String[] args) {
 //		BubbledSorter s = new BubbledSorter();
-        QuickSorter s = new QuickSorter();
-        s.setPivotPolicy(Pivot.LAST);
-        int[] input = new int[]{33,552,22,51,1,-2,6};//{1,2,3,4,5,6};
+//        QuickSorter s = new QuickSorter();
+//        s.setPivotPolicy(Pivot.LAST);
+        MergeSorter s = new MergeSorter();
+        int[] input = new int[]{33,552,22,51,1,-2,6};//{1,2,3,4,5,6};//
         logArray(input);
         long before = System.currentTimeMillis();
 		s.sort(input);
