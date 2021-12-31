@@ -14,7 +14,7 @@ public class QuickSorter implements Sorter {
         int pivotIndex=0;
         switch (this.pivot){
             case FIRST:
-                pivotIndex = 0;
+                pivotIndex = low;
                 break;
             case LAST:
                 pivotIndex = high;
@@ -70,13 +70,29 @@ public class QuickSorter implements Sorter {
     private int partition(int[] elements, int low, int high){
         int pIdx = this.getPivotIndex(low, high);
         int p = elements[pIdx];
-        int ppos=low -1;
-        for(int i=low; i<high; i++){
-            if(elements[i] < p){
-                if(i != ++ppos) {
-                    Utils.swap(i, ppos, elements);
+        int ppos=-1;
+        switch (this.pivot){
+            case FIRST:
+                ppos=low;
+                for(int i=low+1; i<=high; i++){
+                    if(elements[i] < p){
+                        if(i != ++ppos) {
+                            Utils.swap(i, ppos, elements);
+                        }
+                    }
                 }
-            }
+                ppos--;
+                break;
+            case LAST:
+                ppos=low -1;
+                for(int i=low; i<high; i++){
+                    if(elements[i] < p){
+                        if(i != ++ppos) {
+                            Utils.swap(i, ppos, elements);
+                        }
+                    }
+                }
+                break;
         }
         if(++ppos != pIdx) {
             Utils.swap(pIdx, ppos, elements);
