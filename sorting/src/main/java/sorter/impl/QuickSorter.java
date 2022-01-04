@@ -1,38 +1,16 @@
 package sorter.impl;
 
 import sorter.Pivot;
-import sorter.Sorter;
+import sorter.PivotSorter;
 import sorter.util.Utils;
 
-import java.util.Random;
 
-public class QuickSorter implements Sorter {
+public class QuickSorter extends PivotSorter {
 
-    private Pivot pivot;
 
-    private int getPivotIndex(int low, int high){
-        int pivotIndex=0;
-        switch (this.pivot){
-            case FIRST:
-                pivotIndex = low;
-                break;
-            case LAST:
-                pivotIndex = high;
-                break;
-            case RANDOM:
-                pivotIndex = new Random(low).nextInt(high);
-                break;
-            case MEDIAN:
-                pivotIndex = (high-low)/2;
-                break;
-        }
-        return pivotIndex;
+    public QuickSorter(Pivot p) {
+        super(p);
     }
-
-    public void setPivotPolicy(Pivot pivot){
-        this.pivot = pivot;
-    }
-
 
     /**
      * The goal with quick sort is to find the correct position of the pivot in our input array
@@ -50,9 +28,9 @@ public class QuickSorter implements Sorter {
         if(elements.length == 1){
             return;
         }
-        if(this.pivot == null){
+        if(this.getPivot() == null){
             // default policy is to use last element as pivot
-            this.pivot = Pivot.LAST;
+            this.setPivotPolicy( Pivot.LAST);
         }
         int high = elements.length-1;
         int low = 0;
@@ -71,7 +49,7 @@ public class QuickSorter implements Sorter {
         int pIdx = this.getPivotIndex(low, high);
         int p = elements[pIdx];
         int ppos=-1;
-        switch (this.pivot){
+        switch (this.getPivot()){
             case FIRST:
                 ppos=low;
                 for(int i=low+1; i<=high; i++){
@@ -82,6 +60,9 @@ public class QuickSorter implements Sorter {
                     }
                 }
                 ppos--;
+                if(++ppos != pIdx) {
+                    Utils.swap(pIdx, ppos, elements);
+                }
                 break;
             case LAST:
                 ppos=low -1;
@@ -92,10 +73,39 @@ public class QuickSorter implements Sorter {
                         }
                     }
                 }
+                if(++ppos != pIdx) {
+                    Utils.swap(pIdx, ppos, elements);
+                }
                 break;
-        }
-        if(++ppos != pIdx) {
-            Utils.swap(pIdx, ppos, elements);
+            case RANDOM:
+                ppos=pIdx;
+                int lesser = 0;
+                for(int i=low; i<=high; i++){
+                    if(i != ppos){
+                        if(elements[i] < p){
+                            lesser++;
+                            if(i > ppos){
+                               Utils.swap(i, ppos, elements);
+                               ppos = i;
+                                if(i>low+lesser) {
+                                    for (int j = i; j > low+lesser; j--, ppos--) {
+                                        Utils.swap(j, j - 1, elements);
+                                    }
+                                }
+                            }
+                        }
+                        else if(elements[i] > p){
+                            if(i != high){
+                                if(i < ppos) {
+                                    Utils.swap(i, ppos, elements);
+                                    ppos = i;
+                                }
+                            }
+
+                        }
+                    }
+                }
+                break;
         }
         return ppos;
     }
