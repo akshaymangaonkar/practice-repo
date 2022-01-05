@@ -1,31 +1,12 @@
 package sorter.impl;
 
 import sorter.Pivot;
-import sorter.Sorter;
+import sorter.PivotSorter;
 
-import java.util.Random;
+public class MergeSorter extends PivotSorter {
 
-public class MergeSorter implements Sorter {
-
-    private final Pivot pivot = Pivot.MEDIAN;
-
-    private int getPivotIndex(int low, int high){
-        int pivotIndex=0;
-        switch (this.pivot){
-            case FIRST:
-                pivotIndex = 0;
-                break;
-            case LAST:
-                pivotIndex = high;
-                break;
-            case RANDOM:
-                pivotIndex = new Random(low).nextInt(high);
-                break;
-            case MEDIAN:
-                pivotIndex = (high+1 - low)/2;
-                break;
-        }
-        return pivotIndex;
+    public MergeSorter(){
+        super(Pivot.MEDIAN);
     }
 
     @Override
@@ -38,6 +19,11 @@ public class MergeSorter implements Sorter {
         int high = size-1;
         int low = 0;
         sort(elements, low, high);
+    }
+
+    @Override
+    public void setPivotPolicy(Pivot pivot){
+        // The pivot policy will always be median so no update required here
     }
 
     private void sort(int[] elements, int low, int high){
