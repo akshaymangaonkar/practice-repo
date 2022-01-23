@@ -53,7 +53,7 @@ public class QuickSorter extends PivotSorter {
             case FIRST:
                 ppos=low;
                 for(int i=low+1; i<=high; i++){
-                    if(elements[i] < p){
+                    if(elements[i] <= p){
                         if(i != ++ppos) {
                             Utils.swap(i, ppos, elements);
                         }
@@ -67,7 +67,7 @@ public class QuickSorter extends PivotSorter {
             case LAST:
                 ppos=low -1;
                 for(int i=low; i<high; i++){
-                    if(elements[i] < p){
+                    if(elements[i] <= p){
                         if(i != ++ppos) {
                             Utils.swap(i, ppos, elements);
                         }
@@ -82,7 +82,7 @@ public class QuickSorter extends PivotSorter {
                 int lesser = 0;
                 for(int i=low; i<=high; i++){
                     if(i != ppos){
-                        if(elements[i] < p){
+                        if(elements[i] <= p){
                             lesser++;
                             if(i > ppos){
                                Utils.swap(i, ppos, elements);
@@ -94,7 +94,7 @@ public class QuickSorter extends PivotSorter {
                                 }
                             }
                         }
-                        else if(elements[i] > p){
+                        else if(elements[i] >= p){
                             if(i != high){
                                 if(i < ppos) {
                                     Utils.swap(i, ppos, elements);
